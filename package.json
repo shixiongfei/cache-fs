@@ -1,0 +1,45 @@
+{
+  "name": "cache-fs",
+  "version": "1.0.0",
+  "description": "A promise-based cache that reads and writes to the file-system.",
+  "main": "./lib/src/index.js",
+  "types": "./lib/src/index.d.ts",
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "tsc && node lib/test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shixiongfei/cache-fs.git"
+  },
+  "keywords": [
+    "memoize",
+    "memoizer",
+    "cache",
+    "caching",
+    "memoization",
+    "file system",
+    "fs"
+  ],
+  "author": "shixiongfei",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/shixiongfei/cache-fs/issues"
+  },
+  "homepage": "https://github.com/shixiongfei/cache-fs#readme",
+  "devDependencies": {
+    "@types/node": "^20.5.6",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.48.0",
+    "prettier": "^3.0.2",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@msgpack/msgpack": "^2.8.0"
+  }
+}
