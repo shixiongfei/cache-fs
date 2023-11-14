@@ -14,7 +14,7 @@ import path from "node:path";
 import zlib from "node:zlib";
 import { encode, decode } from "@msgpack/msgpack";
 
-export const ensurePath = (filename: string) => {
+const ensurePath = (filename: string) => {
   const filepath = path.dirname(filename);
 
   if (!fs.existsSync(filepath)) {
@@ -25,8 +25,7 @@ export const ensurePath = (filename: string) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const isPromise = (value: any): boolean =>
-  value && value instanceof Promise;
+const isPromise = (value: any): boolean => value && value instanceof Promise;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const cacheFs = <T extends (...args: any[]) => any>(
