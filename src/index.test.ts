@@ -1,7 +1,7 @@
 /*
- * test.ts
+ * index.test.ts
  *
- * Copyright (c) 2023 Xiongfei Shi
+ * Copyright (c) 2023-2024 Xiongfei Shi
  *
  * Author: Xiongfei Shi <xiongfei.shi(a)icloud.com>
  * License: Apache-2.0
@@ -9,7 +9,7 @@
  * https://github.com/shixiongfei/cache-fs
  */
 
-import { cacheFs, cacheFsAsync } from "../src/index";
+import { cacheFs, cacheFsAsync } from "./index.js";
 
 const generate = (kind: string, a: number, b: number) => {
   const time = new Date().getTime();

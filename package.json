@@ -2,17 +2,16 @@
   "name": "cache-fs",
   "version": "1.0.3",
   "description": "A promise-based cache that reads and writes to the file-system.",
-  "main": "./lib/src/index.js",
-  "types": "./lib/src/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib/",
-    "src/",
-    "test/"
+    "src/"
   ],
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "tsc && node lib/test/test.js"
+    "test": "tsc && node lib/index.test.js"
   },
   "repository": {
     "type": "git",
