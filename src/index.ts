@@ -12,7 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
-import { encode, decode } from "@msgpack/msgpack";
+import { encode, decode } from "msgpackr";
 
 const ensurePath = (filename: string) => {
   const filepath = path.dirname(filename);
