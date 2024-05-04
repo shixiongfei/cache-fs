@@ -12,6 +12,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
+import { isPromise } from "node:util/types";
 import { encode, decode } from "msgpackr";
 
 const ensurePath = (filename: string) => {
@@ -24,46 +25,39 @@ const ensurePath = (filename: string) => {
   return filename;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isPromise = (value: any): boolean => value && value instanceof Promise;
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const cacheFs = <T extends (...args: any[]) => any>(
-  pathGen: (...args: Parameters<T>) => string,
-  fn: T,
-): T => {
-  const cachedFn = (...args: Parameters<T>) => {
+export const cacheFs = <T, P extends Array<unknown>>(
+  pathGen: (...args: P) => string,
+  fn: (...args: P) => T,
+) => {
+  const cachedFn = (...args: P): T => {
     const filename = ensurePath(pathGen.apply(this, args));
 
     if (fs.existsSync(filename)) {
       const data = fs.readFileSync(filename);
-      return decode(zlib.unzipSync(data)) as ReturnType<T>;
+      return decode(zlib.unzipSync(data));
     } else {
       const result = fn.apply(this, args);
 
       if (result !== undefined) {
         fs.writeFileSync(filename, zlib.gzipSync(encode(result)));
       }
-      return result as ReturnType<T>;
+      return result;
     }
   };
-  return cachedFn as T;
+  return cachedFn;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const cacheFsAsync = <T extends (...args: any[]) => Promise<any>>(
-  pathGen: (...args: Parameters<T>) => Promise<string> | string,
-  fn: T,
-): T => {
-  const cachedFn = async (...args: Parameters<T>) => {
+export const cacheFsAsync = <T, P extends Array<unknown>>(
+  pathGen: (...args: P) => Promise<string> | string,
+  fn: (...args: P) => Promise<T> | T,
+) => {
+  const cachedFn = async (...args: P): Promise<T> => {
     const path = pathGen.apply(this, args);
-    const filename = ensurePath(
-      (isPromise(path) ? await path : path) as Awaited<string>,
-    );
+    const filename = ensurePath(isPromise(path) ? await path : path);
 
     if (fs.existsSync(filename)) {
       const data = fs.readFileSync(filename);
-      return decode(zlib.unzipSync(data)) as Awaited<ReturnType<T>>;
+      return decode(zlib.unzipSync(data));
     } else {
       const result = fn.apply(this, args);
       const retval = isPromise(result) ? await result : result;
@@ -71,8 +65,8 @@ export const cacheFsAsync = <T extends (...args: any[]) => Promise<any>>(
       if (retval !== undefined) {
         fs.writeFileSync(filename, zlib.gzipSync(encode(retval)));
       }
-      return retval as Awaited<ReturnType<T>>;
+      return retval;
     }
   };
-  return cachedFn as T;
+  return cachedFn;
 };
